@@ -5,6 +5,7 @@ from yowsup.layers import YowLayerEvent, EventCallback
 from yowsup.layers.network import YowNetworkLayer
 import sys
 from yowsup.common import YowConstants
+import binascii
 import datetime
 import os
 import logging
@@ -529,10 +530,11 @@ class YowsupCliLayer(Cli, YowInterfaceLayer):
 
 
     def getDownloadableMediaMessageBody(self, message):
-         return "[Media Type:{media_type}, Size:{media_size}, URL:{media_url}]".format(
+         return "[Media Type:{media_type}, Size:{media_size}, URL:{media_url}, Content:{media_content}]".format(
             media_type = message.getMediaType(),
             media_size = message.getMediaSize(),
-            media_url = message.getMediaUrl()
+            media_url = message.getMediaUrl(),
+            media_content = binascii.b2a_base64(message.getMediaContent())
             )
 
     def doSendMedia(self, mediaType, filePath, url, to, ip = None, caption = None):
